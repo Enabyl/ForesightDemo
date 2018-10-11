@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +12,121 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ForesightDemo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kQk-9J-7pz">
+                                <rect key="frame" x="155" y="52" width="65" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aw9-9F-qPz">
+                                <rect key="frame" x="145" y="84" width="85.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cpn-ng-Lkh">
+                                <rect key="frame" x="62.5" y="136.5" width="250" height="224"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vy8-j3-NFa">
+                                        <rect key="frame" x="0.0" y="0.0" width="250" height="50"/>
+                                        <color key="backgroundColor" red="0.0" green="0.32852089410000002" blue="0.57488495110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="qas-2K-Hp8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="Generate Data">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="generateDataButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="U5n-Mj-fuT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9In-ii-wmi">
+                                        <rect key="frame" x="0.0" y="58" width="250" height="50"/>
+                                        <color key="backgroundColor" red="0.0" green="0.56284224989999998" blue="0.31881666180000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="Upload Data">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="uploadDataButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xKA-gP-mAb"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7kq-n8-VoY">
+                                        <rect key="frame" x="0.0" y="116" width="250" height="50"/>
+                                        <color key="backgroundColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="Retrieve Model">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="retrieveModelButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1B6-XT-kuB"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7vb-Ee-Rbd">
+                                        <rect key="frame" x="0.0" y="174" width="250" height="50"/>
+                                        <color key="backgroundColor" red="0.84465640779999995" green="0.51457053419999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="Generate Prediction">
+                                            <color key="titleColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="generatingPredictionsButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YyJ-Bt-Gym"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Vy8-j3-NFa" secondAttribute="trailing" id="4A5-vB-Xi8"/>
+                                    <constraint firstItem="7kq-n8-VoY" firstAttribute="leading" secondItem="cpn-ng-Lkh" secondAttribute="leading" id="KgZ-51-Tme"/>
+                                    <constraint firstAttribute="trailing" secondItem="9In-ii-wmi" secondAttribute="trailing" id="KzD-Tj-PCf"/>
+                                    <constraint firstItem="Vy8-j3-NFa" firstAttribute="leading" secondItem="cpn-ng-Lkh" secondAttribute="leading" id="MeI-ok-ZNF"/>
+                                    <constraint firstItem="7vb-Ee-Rbd" firstAttribute="leading" secondItem="cpn-ng-Lkh" secondAttribute="leading" id="Nfb-OX-98C"/>
+                                    <constraint firstAttribute="trailing" secondItem="7vb-Ee-Rbd" secondAttribute="trailing" id="cB9-I0-3Yf"/>
+                                    <constraint firstAttribute="trailing" secondItem="7kq-n8-VoY" secondAttribute="trailing" id="cGb-Wj-yrD"/>
+                                    <constraint firstItem="9In-ii-wmi" firstAttribute="leading" secondItem="cpn-ng-Lkh" secondAttribute="leading" id="fQa-ey-Dda"/>
+                                    <constraint firstAttribute="width" constant="250" id="nf0-cY-B9Y"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tSb-ue-UeU">
+                                <rect key="frame" x="161" y="368.5" width="53" height="36"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <state key="normal" title="Reset">
+                                    <color key="titleColor" red="1" green="0.49327188729999999" blue="0.47399842739999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonPress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="52o-u2-Wf6"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Aw9-9F-qPz" firstAttribute="top" secondItem="kQk-9J-7pz" secondAttribute="bottom" constant="8" id="24n-aV-VGb"/>
+                            <constraint firstItem="tSb-ue-UeU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8Uh-tW-uHx"/>
+                            <constraint firstItem="Aw9-9F-qPz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9XW-MX-JOj"/>
+                            <constraint firstItem="tSb-ue-UeU" firstAttribute="top" secondItem="7vb-Ee-Rbd" secondAttribute="bottom" constant="8" id="CHo-sc-Xb4"/>
+                            <constraint firstItem="cpn-ng-Lkh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="JEj-g5-RGk"/>
+                            <constraint firstItem="cpn-ng-Lkh" firstAttribute="top" secondItem="Aw9-9F-qPz" secondAttribute="bottom" constant="32" id="O7s-a1-Mij"/>
+                            <constraint firstItem="kQk-9J-7pz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="TED-A4-vT1"/>
+                            <constraint firstItem="kQk-9J-7pz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zn2-Zo-jOm"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="generateDataButton" destination="Vy8-j3-NFa" id="phc-hw-5fW"/>
+                        <outlet property="generatePredictionButton" destination="7vb-Ee-Rbd" id="Oje-BX-UBy"/>
+                        <outlet property="retrieveModelButton" destination="7kq-n8-VoY" id="Pba-Xx-BR9"/>
+                        <outlet property="statusField" destination="Aw9-9F-qPz" id="dSy-uM-9Cx"/>
+                        <outlet property="uploadDataButton" destination="9In-ii-wmi" id="zb1-OW-fVF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="-84" y="132.68365817091455"/>
         </scene>
     </scenes>
 </document>
