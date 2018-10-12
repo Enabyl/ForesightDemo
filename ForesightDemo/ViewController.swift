@@ -11,11 +11,28 @@ import SwiftyForesight
 
 class ViewController: UIViewController {
     
-    // MARK: Global Variables
+    // MARK: Global Variables (General)
     // Setting the "Generate Data" button as the active button
     var activeButtons = [ActiveButton]()
     // Default status field text
     let defaultStatusText = "Select Action"
+    // Number of feature vectors
+    let numFeatures = 3
+    // Feature vector length
+    let featureLength = 5
+    // Target vector length
+    let targetLength = 3
+    // User ID
+    let userID = UUID().uuidString
+    
+    // MARK: Global Variables (Foresight)
+    var cloudManager: CloudManager?     // CloudManager Object
+    var myData: LibraData?              // LibraData Object
+    var myModel: LibraModel?            // LibraModel Object
+    // From awsconfiguration.json
+    let identityID = "MyIdentityID"     // AWS Identity ID
+    let writeBucket = "MyWriteBucket"   // AWS Write Bucket Name
+    let readBucket = "MyReadBucket"     // AWS Read Bucket Name
     
     // MARK: Outlets
     @IBOutlet weak var generateDataButton: UIButton!
@@ -43,6 +60,12 @@ class ViewController: UIViewController {
             setActiveButtons(toButtons: activeButtons)
         }
         
+        // Initialize CloudManager
+        cloudManager = CloudManager(identityID: identityID, userID: userID, writeBucket: writeBucket, readBucket: readBucket)
+        
+        // Initialize LibraData
+        myData = LibraData(hasTimestamps: false, featureVectors: numFeatures, labelVectorLength: targetLength, withManager: cloudManager!)
+        
     }
 
     // MARK: Action Buttons
@@ -59,6 +82,30 @@ class ViewController: UIViewController {
         
         // Set status field
         statusField.text = "Generating Data..."
+        
+        // Define feature and label placeholders
+        var features = [[Double]]()
+        var labels = [[Double]]()
+        
+        // Populate feature array
+        for i in 0..<numFeatures {
+            // Set feature vector placeholder
+            let featureVector = Array<Double>(repeating: Double(i), count: featureLength)
+            // Append feature vector to feature array
+            features.append(featureVector)
+        }
+        
+        // Populate label array
+        for i in 0..<featureLength {
+            // Set label vector placeholder
+            let labelVector = Array<Double>(repeating: Double(i), count: targetLength)
+            // Append label vector to label array
+            labels.append(labelVector)
+        }
+        
+        // Feed arrays to LibraData object
+        myData?.addFeatures(features)
+        myData?.addLabels(labels)
         
         // Set status field
         statusField.text = "Generated Data"
@@ -85,9 +132,31 @@ class ViewController: UIViewController {
         // Set status field
         statusField.text = "Uploading Data..."
         
-        // Set status field
+        // Initialize placeholder for data URL
+        var url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+        
+        // Format data
+        
+        let group = DispatchGroup(); group.enter()
+        myData?.formatData(completion: { (success, data, dataURL) in
+            // Capture URL in closure
+            url = dataURL; group.leave()
+        })
+        
+        // Update the status field
+        group.wait()
         statusField.text = "Uploaded Data"
         
+        // Once the data has been saved locally, upload it to remote S3 write bucket
+        myData?.uploadDataToRemote(fromLocalPath: url, completion: { (success) in
+            // Notify user of status
+            if success {
+                self.statusField.text = "Uploaded Data"
+            } else {
+                self.statusField.text = "Error Uploading Data"
+            }
+        })
+
         // Add "Retrieve Model" to active buttons
         if !activeButtons.contains(.retrieve) {
             activeButtons.append(.retrieve)
