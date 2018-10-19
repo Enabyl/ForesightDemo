@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreML
 import SwiftyForesight
 
 class ViewController: UIViewController {
@@ -17,7 +18,7 @@ class ViewController: UIViewController {
     // Default status field text
     let defaultStatusText = "Select Action"
     // Number of feature vectors
-    let numFeatures = 3
+    let numFeatures = 5
     // Feature vector length
     let featureLength = 5
     // Target vector length
@@ -28,11 +29,12 @@ class ViewController: UIViewController {
     // MARK: Global Variables (Foresight)
     var cloudManager: CloudManager?     // CloudManager Object
     var myData: LibraData?              // LibraData Object
-    var myModel: LibraModel?            // LibraModel Object
+    var myModel: FeedforwardModel?      // LibraModel Object
     // From awsconfiguration.json
-    let identityID = "MyIdentityID"     // AWS Identity ID
-    let writeBucket = "MyWriteBucket"   // AWS Write Bucket Name
-    let readBucket = "MyReadBucket"     // AWS Read Bucket Name
+    let identityID = "us-east-1:ec8a76fe-0f69-4d17-a479-b8e75c5ad9ad"   // AWS Identity ID
+    let writeBucket = "foresightdemo-userfiles-mobilehub-2116500124"    // AWS Write Bucket Name
+    let readBucket = "foresightdemo-deployments-mobilehub-2116500124"   // AWS Read Bucket Name
+    let tableName = "foresightdemo-mobilehub-2116500124-ForesightDemo"  // AWS DynamoDB Table Name
     
     // MARK: Outlets
     @IBOutlet weak var generateDataButton: UIButton!
@@ -66,6 +68,14 @@ class ViewController: UIViewController {
         // Initialize LibraData
         myData = LibraData(hasTimestamps: false, featureVectors: numFeatures, labelVectorLength: targetLength, withManager: cloudManager!)
         
+        // Initialize LibraModel
+        // Set filepath for LibraModel
+        let modelURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("myModel.mlmodel")
+        myModel = FeedforwardModel(modelClass: MLModel(), numInputFeatures: 5, localFilepath: modelURL, withManager: cloudManager!)
+        
+        // Set table name
+        CloudManager.tableName = tableName
+        
     }
 
     // MARK: Action Buttons
@@ -88,9 +98,12 @@ class ViewController: UIViewController {
         var labels = [[Double]]()
         
         // Populate feature array
-        for i in 0..<numFeatures {
+        for _ in 0..<numFeatures {
             // Set feature vector placeholder
-            let featureVector = Array<Double>(repeating: Double(i), count: featureLength)
+            var featureVector = [Double]()
+            for _ in 0..<featureLength {
+                featureVector.append(Double.random(in: 0..<1))
+            }
             // Append feature vector to feature array
             features.append(featureVector)
         }
@@ -103,9 +116,19 @@ class ViewController: UIViewController {
             labels.append(labelVector)
         }
         
+        // Format current date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMhhmmss"
+        
+        // Generate metadata
+        let myMetadata = [Keys.hash: userID, Keys.range: formatter.string(from: Date())]
+        
         // Feed arrays to LibraData object
         myData?.addFeatures(features)
         myData?.addLabels(labels)
+        
+        // Feed metadata to LibraData object
+        myData?.addMetadata(withAttributes: myMetadata)
         
         // Set status field
         statusField.text = "Generated Data"
@@ -143,17 +166,23 @@ class ViewController: UIViewController {
             url = dataURL; group.leave()
         })
         
-        // Update the status field
         group.wait()
-        statusField.text = "Uploaded Data"
-        
         // Once the data has been saved locally, upload it to remote S3 write bucket
         myData?.uploadDataToRemote(fromLocalPath: url, completion: { (success) in
             // Notify user of status
             if success {
-                self.statusField.text = "Uploaded Data"
+                self.statusField.text = "Uploaded Data (1)"
             } else {
                 self.statusField.text = "Error Uploading Data"
+            }
+        })
+        
+        // Upload metadata to DynamoDB
+        myData?.uploadMetadataToRemote(completion: { (success) in
+            if success{
+                DispatchQueue.main.async {
+                    self.statusField.text = "Uploaded Data (2)"
+                }
             }
         })
 
@@ -179,6 +208,9 @@ class ViewController: UIViewController {
         // Set status field
         statusField.text = "Retrieving Model..."
         
+        // Fetch model from remote server
+        myModel?.fetchFromRemote(withRemoteFilename: "softmax.mlmodel")
+        
         // Set status field
         statusField.text = "Retrieved Model"
         
@@ -201,11 +233,27 @@ class ViewController: UIViewController {
             print("Invalid Request: No model for prediction."); return
         }
         
+        // Ensure that a model is compiled
+        guard (myModel?.compiled)! else {
+            // Print error and return
+            print("Invalid Request: No model for prediction."); return
+        }
+        
         // Set status field
         statusField.text = "Generating Predictions..."
         
+        // Generate predictions
+        // Set inputs
+        var inputVector = [Double]()
+        for _ in 0..<numFeatures {
+            inputVector.append(Double.random(in: 0..<1))
+        }
+        
+        // Make prediction
+        let prediction = (myModel?.predict(forInputs: inputVector, availableGPU: true))!
+        
         // Set status field
-        statusField.text = "Generated Predictions"
+        statusField.text = (prediction[2].doubleValue > 0.5) ? "Generated Predictions" : "Error Generating Predictions"
         
     }
     

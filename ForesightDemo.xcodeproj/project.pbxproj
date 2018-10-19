@@ -8,17 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		7E82BFCA6003487EC885AC60 /* Pods_ForesightDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DC8F6D9C4952063D31EADD4 /* Pods_ForesightDemo.framework */; };
+		B30265E92172783A00C2C5CA /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = B30265E82172783A00C2C5CA /* awsconfiguration.json */; };
 		B34588AE216E55AD0036FFB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34588AD216E55AD0036FFB2 /* AppDelegate.swift */; };
 		B34588B0216E55AD0036FFB2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34588AF216E55AD0036FFB2 /* ViewController.swift */; };
 		B34588B3216E55AD0036FFB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34588B1216E55AD0036FFB2 /* Main.storyboard */; };
 		B34588B5216E55AF0036FFB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B34588B4216E55AF0036FFB2 /* Assets.xcassets */; };
 		B34588B8216E55AF0036FFB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34588B6216E55AF0036FFB2 /* LaunchScreen.storyboard */; };
+		B3EEF8CA2172A99B00940E31 /* softmax.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B3EEF8C92172A99B00940E31 /* softmax.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0DC8F6D9C4952063D31EADD4 /* Pods_ForesightDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ForesightDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		31C61AD745D095D89D7770DB /* Pods-ForesightDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForesightDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ForesightDemo/Pods-ForesightDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		3F2D4EB8E14235A5A1A49DCD /* Pods-ForesightDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForesightDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ForesightDemo/Pods-ForesightDemo.release.xcconfig"; sourceTree = "<group>"; };
+		B30265E82172783A00C2C5CA /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		B34588AA216E55AD0036FFB2 /* ForesightDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ForesightDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B34588AD216E55AD0036FFB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B34588AF216E55AD0036FFB2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,6 +29,7 @@
 		B34588B4216E55AF0036FFB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B34588B7216E55AF0036FFB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B34588B9216E55AF0036FFB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3EEF8C92172A99B00940E31 /* softmax.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = softmax.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,8 @@
 		B34588AC216E55AD0036FFB2 /* ForesightDemo */ = {
 			isa = PBXGroup;
 			children = (
+				B3EEF8C92172A99B00940E31 /* softmax.mlmodel */,
+				B30265E82172783A00C2C5CA /* awsconfiguration.json */,
 				B34588AD216E55AD0036FFB2 /* AppDelegate.swift */,
 				B34588AF216E55AD0036FFB2 /* ViewController.swift */,
 				B34588B1216E55AD0036FFB2 /* Main.storyboard */,
@@ -99,7 +105,7 @@
 				B34588A6216E55AD0036FFB2 /* Sources */,
 				B34588A7216E55AD0036FFB2 /* Frameworks */,
 				B34588A8216E55AD0036FFB2 /* Resources */,
-				3ADA17983F8883D7D1FB25BD /* [CP] Embed Pods Frameworks */,
+				1845D9BFB01D6AE58A332999 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,6 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B30265E92172783A00C2C5CA /* awsconfiguration.json in Resources */,
 				B34588B8216E55AF0036FFB2 /* LaunchScreen.storyboard in Resources */,
 				B34588B5216E55AF0036FFB2 /* Assets.xcassets in Resources */,
 				B34588B3216E55AD0036FFB2 /* Main.storyboard in Resources */,
@@ -157,7 +164,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3ADA17983F8883D7D1FB25BD /* [CP] Embed Pods Frameworks */ = {
+		1845D9BFB01D6AE58A332999 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -214,6 +221,7 @@
 			files = (
 				B34588B0216E55AD0036FFB2 /* ViewController.swift in Sources */,
 				B34588AE216E55AD0036FFB2 /* AppDelegate.swift in Sources */,
+				B3EEF8CA2172A99B00940E31 /* softmax.mlmodel in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
