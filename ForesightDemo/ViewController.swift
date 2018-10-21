@@ -109,9 +109,9 @@ class ViewController: UIViewController {
         }
         
         // Populate label array
-        for i in 0..<featureLength {
-            // Set label vector placeholder
-            let labelVector = Array<Double>(repeating: Double(i), count: targetLength)
+        for _ in 0..<featureLength {
+            // Set label vector placeholder ([1, 0, ... , 0])
+            var labelVector = [1.0]; labelVector.append(contentsOf: Array<Double>(repeating: Double(0), count: targetLength-1))
             // Append label vector to label array
             labels.append(labelVector)
         }
@@ -180,9 +180,9 @@ class ViewController: UIViewController {
         // Upload metadata to DynamoDB
         myData?.uploadMetadataToRemote(completion: { (success) in
             if success{
-                DispatchQueue.main.async {
-                    self.statusField.text = "Uploaded Data (2)"
-                }
+                self.statusField.text = "Uploaded Data (2)"
+            } else {
+                self.statusField.text = "Error Uploading Metadata"
             }
         })
 
@@ -209,16 +209,17 @@ class ViewController: UIViewController {
         statusField.text = "Retrieving Model..."
         
         // Fetch model from remote server
-        myModel?.fetchFromRemote(withRemoteFilename: "softmax.mlmodel")
-        
-        // Set status field
-        statusField.text = "Retrieved Model"
-        
-        // Set all buttons to active
-        if !activeButtons.contains(.predict) {
-            activeButtons.append(.predict)
-            setActiveButtons(toButtons: activeButtons)
-        }
+        myModel?.fetchFromRemote(withRemoteFilename: "\(userID)_model0.mlmodel", completion: { (success) in
+            if success {
+                // Update status field
+                self.statusField.text = "Retrieved Model"
+                // Set all buttons to active
+                if !self.activeButtons.contains(.predict) {
+                    self.activeButtons.append(.predict)
+                    self.setActiveButtons(toButtons: self.activeButtons)
+                }
+            }
+        })
         
     }
     
@@ -251,9 +252,20 @@ class ViewController: UIViewController {
         
         // Make prediction
         let prediction = (myModel?.predict(forInputs: inputVector, availableGPU: true))!
+        print(prediction)   // Print to console
         
         // Set status field
-        statusField.text = (prediction[2].doubleValue > 0.5) ? "Generated Predictions" : "Error Generating Predictions"
+        if prediction[2].doubleValue > 0.5 {
+            statusField.text = "Generated Predictions (001)"
+        }
+        else if prediction[1].doubleValue > 0.5 {
+            statusField.text = "Generated Predictions (010)"
+        }
+        else if prediction[0].doubleValue > 0.5 {
+            statusField.text = "Generated Predictions (100)"
+        } else {
+            statusField.text = "Error Generating Predictions"
+        }
         
     }
     
