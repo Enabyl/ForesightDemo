@@ -5,6 +5,8 @@ This is an example iOS Application for the Enabyl Foresight framework. The appli
 - [Fetching Models](#fetching-models)
 - [Generating Predictions](#generating-predictions)
 
+<img src="https://raw.githubusercontent.com/Enabyl/ForesightDemo/master/demo_screenshot.png" alt="App Screenshot" width="200" height="whatever">
+
 ## To Run
 To run the application, first install the necessary pods by including `pod SwiftyForesight` in the application's podfile and running `pod install`. All the necessary AWS dependencies are installed by Cocoapods automatically. The application must then be connected to the user's own AWS resources. If an *awsconfiguration.json* file has been provided (or if it has been downloaded from the AWS Mobile Hub), include it in the application bundle. Then update the following lines of code in *ViewController.swift*:
 ```swift
