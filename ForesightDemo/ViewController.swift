@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     // Number of feature vectors
     let numFeatures = 5
     // Feature vector length
-    let featureLength = 5
+    let featureLength = 50
     // Target vector length
     let targetLength = 3
     // User ID
@@ -171,18 +171,26 @@ class ViewController: UIViewController {
         myData?.uploadDataToRemote(fromLocalPath: url, completion: { (success) in
             // Notify user of status
             if success {
-                self.statusField.text = "Uploaded Data (1)"
+                DispatchQueue.main.async {
+                    self.statusField.text = "Uploaded Data (1)"
+                }
             } else {
-                self.statusField.text = "Error Uploading Data"
+                DispatchQueue.main.async {
+                    self.statusField.text = "Error Uploading Data"
+                }
             }
         })
         
         // Upload metadata to DynamoDB
         myData?.uploadMetadataToRemote(completion: { (success) in
             if success{
-                self.statusField.text = "Uploaded Data (2)"
+                DispatchQueue.main.async {
+                    self.statusField.text = "Uploaded Data (2)"
+                }
             } else {
-                self.statusField.text = "Error Uploading Metadata"
+                DispatchQueue.main.async {
+                    self.statusField.text = "Error Uploading Metadata"
+                }
             }
         })
 
