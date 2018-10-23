@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     // Target vector length
     let targetLength = 3
     // User ID
-    let userID = UUID().uuidString
+    let userID = "PeepumsNastyUser"
     
     // MARK: Global Variables (Foresight)
     var cloudManager: CloudManager?     // CloudManager Object
@@ -42,6 +42,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var retrieveModelButton: UIButton!
     @IBOutlet weak var generatePredictionButton: UIButton!
     @IBOutlet weak var statusField: UILabel!
+    @IBOutlet weak var predictionIndicator1: UIButton!
+    @IBOutlet weak var predictionIndicator2: UIButton!
+    @IBOutlet weak var predictionIndicator3: UIButton!
     
     // MARK: Override Functions
     override func viewDidLoad() {
@@ -52,6 +55,14 @@ class ViewController: UIViewController {
         uploadDataButton.layer.cornerRadius = 10
         retrieveModelButton.layer.cornerRadius = 10
         generatePredictionButton.layer.cornerRadius = 10
+        
+        // Format prediction indicators
+        predictionIndicator1.layer.cornerRadius = 10
+        predictionIndicator2.layer.cornerRadius = 10
+        predictionIndicator3.layer.cornerRadius = 10
+        predictionIndicator1.layer.backgroundColor = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
+        predictionIndicator2.layer.backgroundColor = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
+        predictionIndicator3.layer.backgroundColor = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
         
         // Set status text
         statusField.text = defaultStatusText
@@ -66,12 +77,12 @@ class ViewController: UIViewController {
         cloudManager = CloudManager(identityID: identityID, userID: userID, writeBucket: writeBucket, readBucket: readBucket)
         
         // Initialize LibraData
-        myData = LibraData(hasTimestamps: false, featureVectors: numFeatures, labelVectorLength: targetLength, withManager: cloudManager!)
+        myData = LibraData(hasTimestamps: true, featureVectors: numFeatures, labelVectorLength: targetLength, withManager: cloudManager!)
         
         // Initialize LibraModel
         // Set filepath for LibraModel
         let modelURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("myModel.mlmodel")
-        myModel = FeedforwardModel(modelClass: MLModel(), numInputFeatures: 5, localFilepath: modelURL, withManager: cloudManager!)
+        myModel = FeedforwardModel(modelClass: MLModel(), numInputFeatures: numFeatures, localFilepath: modelURL, withManager: cloudManager!)
         
         // Set table name
         CloudManager.tableName = tableName
@@ -98,7 +109,7 @@ class ViewController: UIViewController {
         var labels = [[Double]]()
         
         // Populate feature array
-        for _ in 0..<numFeatures {
+        for _ in 0..<numFeatures+1 {
             // Set feature vector placeholder
             var featureVector = [Double]()
             for _ in 0..<featureLength {
@@ -263,17 +274,12 @@ class ViewController: UIViewController {
         print(prediction)   // Print to console
         
         // Set status field
-        if prediction[2].doubleValue > 0.5 {
-            statusField.text = "Generated Predictions (001)"
-        }
-        else if prediction[1].doubleValue > 0.5 {
-            statusField.text = "Generated Predictions (010)"
-        }
-        else if prediction[0].doubleValue > 0.5 {
-            statusField.text = "Generated Predictions (100)"
-        } else {
-            statusField.text = "Error Generating Predictions"
-        }
+        statusField.text = "Generated Predictions"
+        
+        // Update prediction indicators
+        predictionIndicator1.alpha = CGFloat(prediction[0].doubleValue)
+        predictionIndicator2.alpha = CGFloat(prediction[1].doubleValue)
+        predictionIndicator3.alpha = CGFloat(prediction[2].doubleValue)
         
     }
     
@@ -286,6 +292,11 @@ class ViewController: UIViewController {
         
         // Reset text field text
         statusField.text = defaultStatusText
+        
+        // Reset prediction indicator buttons
+        predictionIndicator1.alpha = 1.0
+        predictionIndicator2.alpha = 1.0
+        predictionIndicator3.alpha = 1.0
         
     }
     
