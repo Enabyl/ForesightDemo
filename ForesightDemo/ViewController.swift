@@ -10,7 +10,7 @@ import UIKit
 import CoreML
 import SwiftyForesight
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: Global Variables (General)
     // Setting the "Generate Data" button as the active button
@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     // Target vector length
     let targetLength = 3
     // User ID
-    let userID = "PeepumsNastyUser"
+    var userID: String?
+    let defaultUserID = "PeepumsNastyUser"
     
     // MARK: Global Variables (Foresight)
     var cloudManager: CloudManager?     // CloudManager Object
@@ -45,10 +46,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var predictionIndicator1: UIButton!
     @IBOutlet weak var predictionIndicator2: UIButton!
     @IBOutlet weak var predictionIndicator3: UIButton!
+    @IBOutlet weak var userIDTextField: UITextField!
     
     // MARK: Override Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set user ID
+        userID = defaultUserID
         
         // Format buttons
         generateDataButton.layer.cornerRadius = 10
@@ -64,6 +69,12 @@ class ViewController: UIViewController {
         predictionIndicator2.layer.backgroundColor = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
         predictionIndicator3.layer.backgroundColor = #colorLiteral(red: 0, green: 0.5628422499, blue: 0.3188166618, alpha: 1)
         
+        // Set text field delegate
+        userIDTextField.delegate = self
+        
+        // Set tap gesture recognizer to hide keyboard
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:))))
+        
         // Set status text
         statusField.text = defaultStatusText
         
@@ -74,7 +85,7 @@ class ViewController: UIViewController {
         }
         
         // Initialize CloudManager
-        cloudManager = CloudManager(identityID: identityID, userID: userID, writeBucket: writeBucket, readBucket: readBucket)
+        cloudManager = CloudManager(identityID: identityID, userID: userID!, writeBucket: writeBucket, readBucket: readBucket)
         
         // Initialize LibraData
         myData = LibraData(hasTimestamps: true, featureVectors: numFeatures, labelVectorLength: targetLength, withManager: cloudManager!)
@@ -132,7 +143,7 @@ class ViewController: UIViewController {
         formatter.dateFormat = "yyyyMMhhmmss"
         
         // Generate metadata
-        let myMetadata = [Keys.hash: userID, Keys.range: formatter.string(from: Date())]
+        let myMetadata = [Keys.hash: userID!, Keys.range: formatter.string(from: Date())]
         
         // Feed arrays to LibraData object
         myData?.addFeatures(features)
@@ -165,6 +176,9 @@ class ViewController: UIViewController {
         
         // Set status field
         statusField.text = "Uploading Data..."
+        
+        // If the User ID text field has text, update the user ID
+        if userIDTextField.hasText { userID = userIDTextField.text! }
         
         // Initialize placeholder for data URL
         var url = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
@@ -228,7 +242,7 @@ class ViewController: UIViewController {
         statusField.text = "Retrieving Model..."
         
         // Fetch model from remote server
-        myModel?.fetchFromRemote(withRemoteFilename: "\(userID)_model0.mlmodel", completion: { (success) in
+        myModel?.fetchFromRemote(withRemoteFilename: "\(userID!)_model0.mlmodel", completion: { (success) in
             if success {
                 // Update status field
                 self.statusField.text = "Retrieved Model"
@@ -237,6 +251,8 @@ class ViewController: UIViewController {
                     self.activeButtons.append(.predict)
                     self.setActiveButtons(toButtons: self.activeButtons)
                 }
+            } else { // Print error message
+                self.statusField.text = "Error Retrieving Model"
             }
         })
         
@@ -256,6 +272,7 @@ class ViewController: UIViewController {
         // Ensure that a model is compiled
         guard (myModel?.compiled)! else {
             // Print error and return
+            statusField.text = "No Downloaded Model"
             print("Invalid Request: No model for prediction."); return
         }
         
@@ -270,16 +287,16 @@ class ViewController: UIViewController {
         }
         
         // Make prediction
-        let prediction = (myModel?.predict(forInputs: inputVector, availableGPU: true))!
-        print(prediction)   // Print to console
+        let prediction = myModel?.predict(forInputs: inputVector, availableGPU: true)
+        print("Predictions: \(String(describing: prediction))")   // Print to console
         
         // Set status field
-        statusField.text = "Generated Predictions"
+        statusField.text = (prediction?.count == targetLength) ? "Generated Predictions" : "Error Generating Predictions"
         
         // Update prediction indicators
-        predictionIndicator1.alpha = CGFloat(prediction[0].doubleValue)
-        predictionIndicator2.alpha = CGFloat(prediction[1].doubleValue)
-        predictionIndicator3.alpha = CGFloat(prediction[2].doubleValue)
+        predictionIndicator1.alpha = CGFloat(prediction?[0].doubleValue ?? 1)
+        predictionIndicator2.alpha = CGFloat(prediction?[1].doubleValue ?? 1)
+        predictionIndicator3.alpha = CGFloat(prediction?[2].doubleValue ?? 1)
         
     }
     
@@ -297,6 +314,10 @@ class ViewController: UIViewController {
         predictionIndicator1.alpha = 1.0
         predictionIndicator2.alpha = 1.0
         predictionIndicator3.alpha = 1.0
+        
+        // Clear text field and reset user ID
+        userIDTextField.text = ""
+        userID = defaultUserID
         
     }
     
@@ -326,6 +347,15 @@ class ViewController: UIViewController {
             }
         }
         
+    }
+    
+    // MARK: Text Field Actions
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder(); return true
     }
     
 }

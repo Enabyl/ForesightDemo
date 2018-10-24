@@ -14,6 +14,7 @@
 		B34588B3216E55AD0036FFB2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34588B1216E55AD0036FFB2 /* Main.storyboard */; };
 		B34588B5216E55AF0036FFB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B34588B4216E55AF0036FFB2 /* Assets.xcassets */; };
 		B34588B8216E55AF0036FFB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B34588B6216E55AF0036FFB2 /* LaunchScreen.storyboard */; };
+		B3CC2B112180802A00927CD8 /* logo-1.png in Resources */ = {isa = PBXBuildFile; fileRef = B3CC2B102180802A00927CD8 /* logo-1.png */; };
 		B3EEF8CA2172A99B00940E31 /* softmax.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B3EEF8C92172A99B00940E31 /* softmax.mlmodel */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		B34588B4216E55AF0036FFB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B34588B7216E55AF0036FFB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B34588B9216E55AF0036FFB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3CC2B102180802A00927CD8 /* logo-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-1.png"; sourceTree = "<group>"; };
 		B3EEF8C92172A99B00940E31 /* softmax.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = softmax.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +76,7 @@
 		B34588AC216E55AD0036FFB2 /* ForesightDemo */ = {
 			isa = PBXGroup;
 			children = (
+				B3CC2B0F21807FD700927CD8 /* Media */,
 				B3EEF8C92172A99B00940E31 /* softmax.mlmodel */,
 				B30265E82172783A00C2C5CA /* awsconfiguration.json */,
 				B34588AD216E55AD0036FFB2 /* AppDelegate.swift */,
@@ -84,6 +87,14 @@
 				B34588B9216E55AF0036FFB2 /* Info.plist */,
 			);
 			path = ForesightDemo;
+			sourceTree = "<group>";
+		};
+		B3CC2B0F21807FD700927CD8 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				B3CC2B102180802A00927CD8 /* logo-1.png */,
+			);
+			path = Media;
 			sourceTree = "<group>";
 		};
 		D8304111653F6BFDB2661E04 /* Frameworks */ = {
@@ -156,6 +167,7 @@
 			files = (
 				B30265E92172783A00C2C5CA /* awsconfiguration.json in Resources */,
 				B34588B8216E55AF0036FFB2 /* LaunchScreen.storyboard in Resources */,
+				B3CC2B112180802A00927CD8 /* logo-1.png in Resources */,
 				B34588B5216E55AF0036FFB2 /* Assets.xcassets in Resources */,
 				B34588B3216E55AD0036FFB2 /* Main.storyboard in Resources */,
 			);
@@ -371,7 +383,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XUDF4DA8BH;
 				INFOPLIST_FILE = ForesightDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.enabyl.ForesightDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -387,7 +402,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = XUDF4DA8BH;
 				INFOPLIST_FILE = ForesightDemo/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.enabyl.ForesightDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
